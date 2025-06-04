@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Het0907.github.io/static/css/main.9fc11df5.css",
+    "main.js": "/Het0907.github.io/static/js/main.bbca4c0f.js",
+    "static/js/453.eacd2753.chunk.js": "/Het0907.github.io/static/js/453.eacd2753.chunk.js",
+    "index.html": "/Het0907.github.io/index.html",
+    "main.9fc11df5.css.map": "/Het0907.github.io/static/css/main.9fc11df5.css.map",
+    "main.bbca4c0f.js.map": "/Het0907.github.io/static/js/main.bbca4c0f.js.map",
+    "453.eacd2753.chunk.js.map": "/Het0907.github.io/static/js/453.eacd2753.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9fc11df5.css",
+    "static/js/main.bbca4c0f.js"
+  ]
+}
