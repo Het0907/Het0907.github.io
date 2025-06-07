@@ -61,124 +61,14 @@ const ContactUs = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      
-      {/* Header */}
-      <header className="bg-white shadow-lg sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4">
-            <div className="flex items-center">
-              <div className="flex items-center mr-4">
-                <div className="relative">
-                  <img src="/logo.png" alt="Jay Traders Logo" className="h-12 w-12" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
-                  Jay Traders
-                </h1>
-                {/* <p className="text-xs text-gray-500">Industrial Excellence</p> */}
-              </div>
-            </div>
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 relative group">
-                Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 group-hover:w-full transition-all duration-200"></span>
-              </Link>
-              <Link to="/about" className="text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 relative group">
-                About Us
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 group-hover:w-full transition-all duration-200"></span>
-              </Link>
-              <Link to="/contactus" className="text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 relative group">
-                Contact Us
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 group-hover:w-full transition-all duration-200"></span>
-              </Link>
-              {/* Product Category Dropdown */}
-              <div className="relative">
-                <button
-                  className="flex items-center text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 group"
-                  onClick={toggleDropdown}
-                >
-                  Product Categories
-                  <ChevronDown className={`ml-1 h-4 w-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 group-hover:w-full transition-all duration-200"></span>
-                </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl z-10 animate-fade-in">
-                    <div className="py-2">
-                      <Link to="/engineering-hardware" className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors group" onClick={() => setIsDropdownOpen(false)}>
-                        <div className="w-2 h-2 bg-red-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></div>
-                        Engineering Hardware
-                        <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                      <Link to="#" className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors group">
-                        <div className="w-2 h-2 bg-red-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></div>
-                        Pharma Materials
-                        <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                      <Link to="#" className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors group">
-                        <div className="w-2 h-2 bg-red-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></div>
-                        IBR Materials
-                        <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="relative">
-                <Link to="/cart" className="text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 relative group flex items-center">
-                  <ShoppingBag className="h-6 w-6" />
-                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-gradient-to-r from-red-500 to-pink-500 rounded-full animate-pulse">{cart.length}</span>
-                </Link>
-              </div>
-            </div>
-            {/* Mobile Menu Button */}
-            <div className="flex items-center md:hidden">
-              <button onClick={toggleMenu} className="text-gray-500 hover:text-gray-700 focus:outline-none p-2">
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-200 animate-slide-down">
-            <div className="px-4 pt-2 pb-4 space-y-2">
-              <Link to="/" className="block px-3 py-2 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">Home</Link>
-              <Link to="/about" className="block px-3 py-2 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">About Us</Link>
-              <Link to="/contactus" className="block px-3 py-2 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">Contact Us</Link>
-              <div className="py-2">
-                <button
-                  className="flex items-center justify-between w-full px-3 py-2 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                  onClick={toggleDropdown}
-                >
-                  <span>Product Categories</span>
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {isDropdownOpen && (
-                  <div className="pl-6 mt-2 space-y-1">
-                    <Link to="/engineering-hardware" className="block py-2 text-gray-600 hover:text-red-600 transition-colors" onClick={() => { setIsDropdownOpen(false); setIsMenuOpen(false); }}>Engineering Hardware</Link>
-                    <Link to="#" className="block py-2 text-gray-600 hover:text-red-600 transition-colors">Pharma Materials</Link>
-                    <Link to="#" className="block py-2 text-gray-600 hover:text-red-600 transition-colors">IBR Materials</Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </header>
-      
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-red-600 via-red-700 to-red-800">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-32">
-          <div className="text-center text-white">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Contact <span className="text-red-200">Us</span>
             </h1>
-            <p className="text-xl md:text-2xl text-red-100 max-w-3xl mx-auto leading-relaxed">
-              Get in touch with our team for all your industrial material needs
-            </p>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-50 to-transparent"></div>

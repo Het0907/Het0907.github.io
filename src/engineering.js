@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, Menu, ShoppingBag, X, Phone, Mail, MapPin, ArrowRight, Shield, Truck, Award, Users, Search, Home, ChevronRight } from "lucide-react";
+import axios from 'axios';
 
 export default function EngineeringHardwarePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showCategories, setShowCategories] = useState(true);
   const [cart, setCart] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Load cart from localStorage when component mounts
@@ -14,6 +18,25 @@ export default function EngineeringHardwarePage() {
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     }
+
+    // Fetch categories from backend
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/categories', {
+          params: {
+            parentCategory: 'engineering' // This will fetch all engineering subcategories
+          }
+        });
+        setCategories(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+        setError('Failed to load categories. Please try again later.');
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -288,101 +311,54 @@ export default function EngineeringHardwarePage() {
           </p>
         </div>
 
-        {/* Product Categories Grid */}
-        {showCategories && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {productCategories.map((category, index) => {
-              // If this is the Welding rods item, make it a Link
-              if (category.name.toLowerCase().includes('welding rod')) {
-                return (
-                  <Link
-                    to="/welding-rods"
-                    key={index}
-                    className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden cursor-pointer block"
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl flex items-center justify-center group-hover:from-red-100 group-hover:to-pink-100 transition-colors overflow-hidden">
-                          {category.image ? (
-                            <img 
-                              src={category.image} 
-                              alt={category.name}
-                              className="w-full h-full object-contain p-2"
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.style.display = 'none';
-                                e.target.parentElement.innerHTML = `<span class="text-3xl">${category.fallbackIcon}</span>`;
-                              }}
-                            />
-                          ) : (
-                            <span className="text-3xl">{category.fallbackIcon}</span>
-                          )}
-                        </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-red-600">{category.subcategories}</div>
-                          <div className="text-xs text-gray-500">subcategories</div>
-                        </div>
-                      </div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
-                        {category.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                        {category.description}
-                      </p>
-                      <span className="flex items-center text-blue-600 hover:text-red-600 font-medium text-sm transition-colors group-hover:translate-x-1">
-                        <ChevronDown className="h-4 w-4 mr-1 transform rotate-180" />
-                        Go to Welding Rods
-                      </span>
-                    </div>
-                  </Link>
-                );
-              }
-              // Default for other categories
-              return (
-                <div 
-                  key={index}
-                  className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden cursor-pointer"
+        {/* Categories Grid */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-600 py-8">
+              {error}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {categories.map((category) => (
+                <Link
+                  key={category._id}
+                  to={`/category/${category.slug}`}
+                  className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
                 >
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl flex items-center justify-center group-hover:from-red-100 group-hover:to-pink-100 transition-colors overflow-hidden">
-                        {category.image ? (
-                          <img 
-                            src={category.image} 
-                            alt={category.name}
-                            className="w-full h-full object-contain p-2"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.style.display = 'none';
-                              e.target.parentElement.innerHTML = `<span class="text-3xl">${category.fallbackIcon}</span>`;
-                            }}
-                          />
-                        ) : (
-                          <span className="text-3xl">{category.fallbackIcon}</span>
-                        )}
+                  <div className="aspect-w-16 aspect-h-9 bg-gray-100">
+                    {category.image ? (
+                      <img
+                        src={category.image}
+                        alt={category.name}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-200"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-4xl">
+                        {category.fallbackIcon || '📦'}
                       </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-red-600">{category.subcategories}</div>
-                        <div className="text-xs text-gray-500">subcategories</div>
-                      </div>
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-red-600 transition-colors">
                       {category.name}
                     </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                    <p className="mt-1 text-sm text-gray-500">
                       {category.description}
                     </p>
-                    <button className="flex items-center text-blue-600 hover:text-red-600 font-medium text-sm transition-colors group-hover:translate-x-1">
-                      <ChevronDown className="h-4 w-4 mr-1 transform rotate-180" />
-                      Show {category.subcategories} subcategories
-                    </button>
+                    <div className="mt-2 flex items-center text-sm text-gray-500">
+                      <span>{category.subcategories || 0} subcategories</span>
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Footer */}
